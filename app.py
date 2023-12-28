@@ -44,13 +44,15 @@ TEMPLATE = """
     <form method="post">
         <div id="on_call_end_times">
             {% for end_time in on_call_ends %}
-            <input type="datetime-local" name="on_call_ends[]" value="{{ end_time }}" /><br>
-            <button type="button" onclick="deleteField(this)">Delete</button>
+            <div style="margin-bottom: 10px;">
+                <input type="datetime-local" name="on_call_ends[]" value="{{ end_time }}" style="display: inline-block; width: auto; vertical-align: middle;" />
+                <button type="button" onclick="deleteField(this)" style="display: inline-block; vertical-align: middle;">Delete</button>
+            </div>
             {% endfor %}
         </div>
         <button type="button" onclick="addNewField()">Add New Field</button><br><br>
-        Office Start Time (YYYY-MM-DDTHH:MM):
-        <input type="datetime-local" name="office_start" value="{{ office_start }}" /><br><br>
+        Office Start Time:
+        <input type="datetime-local" name="office_start" value="{{ office_start }}" /><br>
         <input type="submit" value="Check and Calculate" />
     </form>
     {% if message %}
