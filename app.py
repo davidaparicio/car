@@ -12,13 +12,32 @@ TEMPLATE = """
     <script>
     function addNewField() {
         var container = document.getElementById("on_call_end_times");
+        var newFieldDiv = document.createElement("div");
+
         var newField = document.createElement("input");
         newField.type = "datetime-local";
         newField.name = "on_call_ends[]";
-        container.appendChild(document.createElement("br"));
-        container.appendChild(newField);
+
+        var deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.innerHTML = "Delete";
+        deleteButton.onclick = function() { deleteField(this); };
+
+        newFieldDiv.appendChild(newField);
+        newFieldDiv.appendChild(deleteButton);
+        container.appendChild(newFieldDiv);
+    }
+
+    function deleteField(btn) {
+        var container = document.getElementById("on_call_end_times");
+        if (container.childElementCount > 1) {
+            btn.parentElement.remove();
+        } else {
+            alert("At least one end time must be specified.");
+        }
     }
     </script>
+
 </head>
 <body>
     <h2>Check Rest Period for On-Call Sessions</h2>
@@ -26,6 +45,7 @@ TEMPLATE = """
         <div id="on_call_end_times">
             {% for end_time in on_call_ends %}
             <input type="datetime-local" name="on_call_ends[]" value="{{ end_time }}" /><br>
+            <button type="button" onclick="deleteField(this)">Delete</button>
             {% endfor %}
         </div>
         <button type="button" onclick="addNewField()">Add New Field</button><br><br>
