@@ -6,9 +6,13 @@ app = Flask(__name__)
 # HTML template
 TEMPLATE = """
 <!DOCTYPE html>
-<html>
+<html data-theme="light">
 <head>
     <title>On-Call Rest Period Calculator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.24/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
     function addNewField() {
         var container = document.getElementById("on_call_end_times");
@@ -40,23 +44,23 @@ TEMPLATE = """
 
 </head>
 <body>
-    <h2>Check Rest Period for On-Call Sessions</h2>
+    <h2 class="card-title">Check Rest Period for On-Call Sessions</h2>
     <form method="post">
         <div id="on_call_end_times">
             {% for end_time in on_call_ends %}
-            <div style="margin-bottom: 10px;">
-                <input type="datetime-local" name="on_call_ends[]" value="{{ end_time }}" style="display: inline-block; width: auto; vertical-align: middle;" />
-                <button type="button" onclick="deleteField(this)" style="display: inline-block; vertical-align: middle;">Delete</button>
+            <div style="margin-bottom: 10px;" class="p-4" data-theme="cupcake">
+                <input type="datetime-local" name="on_call_ends[]" value="{{ end_time }}" style="display: inline-block; width: auto; vertical-align: middle;" class="input input-bordered input-primary w-full max-w-xs" />
+                <button type="button" onclick="deleteField(this)" style="display: inline-block; vertical-align: middle;" class="btn btn-secondary">Delete</button>
             </div>
             {% endfor %}
         </div>
-        <button type="button" onclick="addNewField()">Add New Field</button><br><br>
-        Office Start Time:
-        <input type="datetime-local" name="office_start" value="{{ office_start }}" /><br>
-        <input type="submit" value="Check and Calculate" />
+        <button type="button" onclick="addNewField()" class="btn btn-primary">Add New Field</button>
+        <p>Office Start Time:</p>
+        <input type="datetime-local" name="office_start" value="{{ office_start }}" class="input input-bordered input-primary w-full max-w-xs" /><br>
+        <input type="submit" class="btn btn-primary" value="Check and Calculate" />
     </form>
     {% if message %}
-    <h3>{{ message|safe }}</h3>
+    {{ message|safe }}
     {% endif %}
 </body>
 </html>
@@ -89,12 +93,12 @@ def check_rest_period():
 
             # Calculate rest window
             if office_start - latest_end >= required_rest:
-                message = f"<p style='color:green;'>Required rest period is respected.</p>You can start at {office_start.isoformat()}"
+                message = f"<p style='color:green;'>Required rest period is respected.</p><br>You can start at {office_start.isoformat()}"
             else:
                 new_start_time = latest_end + required_rest
-                message = f"<p style='color:red;'>Rest period is not respected.</p>You should start at {new_start_time.isoformat()}"
+                message = f"<p style='color:red;'>Rest period is not respected.</p><br>You should start at {new_start_time.isoformat()}"
 
-            message += f"<p>Your inputs.<br>Latest on-call: {latest_end.isoformat()}<br>Office start: {office_start.isoformat()}</p>"
+            message += f"<p>Your inputs.</p><p>Latest on-call: {latest_end.isoformat()}</p><p>Office start: {office_start.isoformat()}</p>"
 
         except ValueError:
             message = "Invalid datetime format."
