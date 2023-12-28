@@ -13,17 +13,31 @@ TEMPLATE = """
 <body>
     <h2>Check Rest Period for On-Call Sessions</h2>
     <form method="post">
-        On-Call End Times (YYYY-MM-DDTHH:MM):<br>
-        <input type="datetime-local" name="on_call_ends" multiple /><br>
+        <div id="on_call_end_times">
+            <input type="datetime-local" name="on_call_ends[]" />
+        </div>
+        <button type="button" onclick="addNewField()">Add New Field</button><br><br>
         Office Start Time (YYYY-MM-DDTHH:MM):
-        <input type="datetime-local" name="office_start" /><br>
+        <input type="datetime-local" name="office_start" /><br><br>
         <input type="submit" value="Check and Calculate" />
     </form>
     {% if message %}
     <h3>{{ message|safe }}</h3>
     {% endif %}
+
+    <script>
+    function addNewField() {
+        var container = document.getElementById("on_call_end_times");
+        var newField = document.createElement("input");
+        newField.type = "datetime-local";
+        newField.name = "on_call_ends[]";
+        container.appendChild(document.createElement("br"));
+        container.appendChild(newField);
+    }
+    </script>
 </body>
 </html>
+
 """
 
 
@@ -31,7 +45,7 @@ TEMPLATE = """
 def check_rest_period():
     message = None
     if request.method == "POST":
-        on_call_ends_str = request.form.getlist("on_call_ends")
+        on_call_ends_str = request.form.getlist("on_call_ends[]")
         office_start_str = request.form["office_start"]
 
         try:
@@ -53,12 +67,12 @@ def check_rest_period():
 
             # Calculate rest window
             if office_start - latest_end >= required_rest:
-                message = f"Required rest period is respected.<br>You can start at {office_start.isoformat()}"
+                message = f"<p style='color:green;'>Required rest period is respected.</p>You can start at {office_start.isoformat()}"
             else:
                 new_start_time = latest_end + required_rest
-                message = f"Rest period is not respected.<br>You should start at {new_start_time.isoformat()}"
+                message = f"<p style='color:red;'>Rest period is not respected.</p>You should start at {new_start_time.isoformat()}"
 
-            message += f"Your inputs. Latest on-call: {latest_end.isoformat()} | Office start: {office_start.isoformat()}"
+            message += f"<p>Your inputs.<br>Latest on-call: {latest_end.isoformat()}<br>Office start: {office_start.isoformat()}</p>"
 
         except ValueError:
             message = "Invalid datetime format."
