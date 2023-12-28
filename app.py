@@ -11,16 +11,16 @@ TEMPLATE = """
     <title>On-Call Rest Period Calculator</title>
 </head>
 <body>
-    <h2>Check 11-Hour Rest Period</h2>
+    <h2>Check Rest Period for On-Call Sessions</h2>
     <form method="post">
-        Last on-call end:
-        <input type="datetime-local" name="last_end" /><br>
-        You want to start the office at:
-        <input type="datetime-local" name="next_start" /><br>
+        On-Call End Times (YYYY-MM-DDTHH:MM):<br>
+        <input type="datetime-local" name="on_call_ends" multiple /><br>
+        Office Start Time (YYYY-MM-DDTHH:MM):
+        <input type="datetime-local" name="office_start" /><br>
         <input type="submit" value="Check and Calculate" />
     </form>
     {% if message %}
-    <h3>{{ message }}</h3>
+    <h3>{{ message|safe }}</h3>
     {% endif %}
 </body>
 </html>
@@ -31,20 +31,34 @@ TEMPLATE = """
 def check_rest_period():
     message = None
     if request.method == "POST":
-        last_end_str = request.form["last_end"]
-        next_start_str = request.form["next_start"]
+        on_call_ends_str = request.form.getlist("on_call_ends")
+        office_start_str = request.form["office_start"]
 
         try:
-            # Convert to datetime objects
-            last_end = datetime.fromisoformat(last_end_str)
-            next_start = datetime.fromisoformat(next_start_str)
+            on_call_ends = [
+                datetime.fromisoformat(end_str) for end_str in on_call_ends_str
+            ]
+            office_start = datetime.fromisoformat(office_start_str)
 
-            # Check if 11-hour rest period is respected
-            if next_start - last_end >= timedelta(hours=11):
-                message = "11-hour rest period is respected."
+            # Check for the latest on-call end time
+            latest_end = max(on_call_ends)
+
+            # Check if the on-call includes weekend
+            if any(
+                end.weekday() >= 5 for end in on_call_ends
+            ):  # 5 and 6 are Saturday and Sunday
+                required_rest = timedelta(hours=35)
             else:
-                new_start_time = last_end + timedelta(hours=11)
-                message = f"11-hour rest period is not respected. You should start at {new_start_time.isoformat()}. Your inputs were latest on-call: {last_end.isoformat()} | Office start: {next_start.isoformat()}"
+                required_rest = timedelta(hours=11)
+
+            # Calculate rest window
+            if office_start - latest_end >= required_rest:
+                message = f"Required rest period is respected.<br>You can start at {office_start.isoformat()}"
+            else:
+                new_start_time = latest_end + required_rest
+                message = f"Rest period is not respected.<br>You should start at {new_start_time.isoformat()}"
+
+            message += f"Your inputs. Latest on-call: {latest_end.isoformat()} | Office start: {office_start.isoformat()}"
 
         except ValueError:
             message = "Invalid datetime format."
