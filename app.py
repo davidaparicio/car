@@ -9,22 +9,6 @@ TEMPLATE = """
 <html>
 <head>
     <title>On-Call Rest Period Calculator</title>
-</head>
-<body>
-    <h2>Check Rest Period for On-Call Sessions</h2>
-    <form method="post">
-        <div id="on_call_end_times">
-            <input type="datetime-local" name="on_call_ends[]" />
-        </div>
-        <button type="button" onclick="addNewField()">Add New Field</button><br><br>
-        Office Start Time (YYYY-MM-DDTHH:MM):
-        <input type="datetime-local" name="office_start" /><br><br>
-        <input type="submit" value="Check and Calculate" />
-    </form>
-    {% if message %}
-    <h3>{{ message|safe }}</h3>
-    {% endif %}
-
     <script>
     function addNewField() {
         var container = document.getElementById("on_call_end_times");
@@ -35,19 +19,35 @@ TEMPLATE = """
         container.appendChild(newField);
     }
     </script>
+</head>
+<body>
+    <h2>Check Rest Period for On-Call Sessions</h2>
+    <form method="post">
+        <div id="on_call_end_times">
+            {% for end_time in on_call_ends %}
+            <input type="datetime-local" name="on_call_ends[]" value="{{ end_time }}" /><br>
+            {% endfor %}
+        </div>
+        <button type="button" onclick="addNewField()">Add New Field</button><br><br>
+        Office Start Time (YYYY-MM-DDTHH:MM):
+        <input type="datetime-local" name="office_start" value="{{ office_start }}" /><br><br>
+        <input type="submit" value="Check and Calculate" />
+    </form>
+    {% if message %}
+    <h3>{{ message|safe }}</h3>
+    {% endif %}
 </body>
 </html>
-
 """
 
 
 @app.route("/", methods=["GET", "POST"])
 def check_rest_period():
     message = None
-    if request.method == "POST":
-        on_call_ends_str = request.form.getlist("on_call_ends[]")
-        office_start_str = request.form["office_start"]
+    on_call_ends_str = request.form.getlist("on_call_ends[]")
+    office_start_str = request.form.get("office_start", "")
 
+    if request.method == "POST":
         try:
             on_call_ends = [
                 datetime.fromisoformat(end_str) for end_str in on_call_ends_str
@@ -77,7 +77,17 @@ def check_rest_period():
         except ValueError:
             message = "Invalid datetime format."
 
-    return render_template_string(TEMPLATE, message=message)
+    # Ensure there's at least one empty field for initial load
+    if not on_call_ends_str:
+        on_call_ends_str = [""]
+
+    # Pass the input values back to the template
+    return render_template_string(
+        TEMPLATE,
+        message=message,
+        on_call_ends=on_call_ends_str,
+        office_start=office_start_str,
+    )
 
 
 if __name__ == "__main__":
