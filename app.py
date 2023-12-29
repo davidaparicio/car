@@ -1,9 +1,17 @@
 import os
 from flask import Flask, request, render_template
-from datetime import datetime, timedelta
-# from rest_period_calculator import calculate_rest_period
+from config import DevelopmentConfig, TestingConfig, ProductionConfig
+from datetime import datetime
+from rest_period_calculator import calculate_rest_period
 
 app = Flask(__name__)
+
+if os.getenv("FLASK_ENV") == "production":
+    app.config.from_object(ProductionConfig)
+elif os.getenv("FLASK_ENV") == "testing":
+    app.config.from_object(TestingConfig)
+else:
+    app.config.from_object(DevelopmentConfig)
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -18,26 +26,17 @@ def check_rest_period():
                 datetime.fromisoformat(end_str) for end_str in on_call_ends_str
             ]
             office_start = datetime.fromisoformat(office_start_str)
-
-            # Check for the latest on-call end time
             latest_end = max(on_call_ends)
 
-            # Check if the on-call includes weekend
-            if any(
-                end.weekday() >= 5 for end in on_call_ends
-            ):  # 5 and 6 are Saturday and Sunday
-                required_rest = timedelta(hours=35)
-            else:
-                required_rest = timedelta(hours=11)
+            # Use the imported function
+            respected, message = calculate_rest_period(on_call_ends, office_start)
 
-            # Calculate rest window
-            if office_start - latest_end >= required_rest:
-                message = f"<p style='color:green;'>Required rest period is respected.</p><br>You can start at {office_start.isoformat()}"
+            if respected:
+                message = f"<p style='color:green;'>{message}</p>"
             else:
-                new_start_time = latest_end + required_rest
-                message = f"<p style='color:red;'>Rest period is not respected.</p><br>You should start at {new_start_time.isoformat()}"
+                message = f"<p style='color:red;'>{message}</p>"
 
-            message += f"<p>Your inputs.</p><p>Latest on-call: {latest_end.isoformat()}</p><p>Office start: {office_start.isoformat()}</p>"
+            message += f"<br><p>Your inputs.</p><p>Latest on-call: {latest_end.isoformat()}</p><p>Office start: {office_start.isoformat()}</p>"
 
         except ValueError:
             message = "Invalid datetime format."
@@ -61,6 +60,4 @@ def about():
 
 
 if __name__ == "__main__":
-    env = os.getenv("ENV", "DEVELOPMENT").upper()
-    debug_mode = False if env == "PRODUCTION" else True
-    app.run(debug=debug_mode)
+    app.run(debug=app.config["DEBUG"])
