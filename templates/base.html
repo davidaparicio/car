@@ -1,0 +1,124 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}On-Call Rest Period Calculator{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.24/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script>
+    function addNewField() {
+        var container = document.getElementById("on_call_end_times");
+        var newFieldDiv = document.createElement("div");
+        newFieldDiv.className = "flex items-center mb-4";
+
+        var newField = document.createElement("input");
+        newField.type = "datetime-local";
+        newField.name = "on_call_ends[]";
+        //newField.style="display: inline-block; width: auto; vertical-align: middle;"
+        newField.className = "input input-bordered input-primary w-full max-w-xs";
+
+        var deleteButton = document.createElement("button");
+        //deleteButton.type = "button";
+        deleteButton.innerHTML = "Delete";
+        deleteButton.onclick = function() { deleteField(this); };
+        deleteButton.className = "btn btn-secondary";
+
+        newFieldDiv.appendChild(newField);
+        newFieldDiv.appendChild(deleteButton);
+        container.appendChild(newFieldDiv);
+    }
+
+    function deleteField(btn) {
+        var container = document.getElementById("on_call_end_times");
+        if (container.childElementCount > 1) {
+            btn.parentElement.remove();
+        } else {
+            alert("At least one end time must be specified.");
+        }
+    }
+
+    // SetTheme
+    function setTheme(themeName) {
+        document.documentElement.setAttribute('data-theme', themeName);
+    }
+
+    function setTheme(themeName) {
+        localStorage.setItem('theme', themeName);
+        updateTheme();
+    }
+
+    function updateTheme() {
+        const theme = localStorage.getItem('theme') || 'cupcake'; // Default to light theme
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+
+    // Set the theme on initial load
+    updateTheme();
+    </script>
+    <!---style>
+    button,
+    button[type="button"],
+    input[type="button"],
+    input[type="reset"],
+    input[type="submit"] {
+        background-color: black;
+    }
+    </style--->
+</head>
+<body class="p-6">
+    <header class="navbar bg-base-100">
+        <div class="flex-1">
+            <a class="btn btn-ghost normal-case text-xl">C.A.R. - Calculatrice Astreinte/Repos</a>
+        </div>
+        <div class="dropdown dropdown-end">
+            <label tabindex="0" class="btn m-1">Select Theme</label>
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a onclick="setTheme('cupcake')">Cupcake</a></li>
+                <li><a onclick="setTheme('light')">Light</a></li>
+                <li><a onclick="setTheme('dark')">Dark</a></li>
+                <!-- Add more themes as needed -->
+            </ul>
+        </div>
+        <div class="flex-none">
+            <ul class="menu menu-horizontal p-0">
+            <li><a>Home</a></li>
+            <li><a>About</a></li>
+            <li><a>Contact</a></li>
+            </ul>
+        </div>
+        </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer p-10 bg-base-200 text-base-content">
+        <div class="flex-1">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Version v0.0.1 - Built 29/12/23</label>
+        </div>
+        <!---div>
+            <span class="footer-title">Services</span>
+            <a class="link link-hover">Branding</a>
+            <a class="link link-hover">Design</a>
+            <a class="link link-hover">Marketing</a>
+            <a class="link link-hover">Advertisement</a>
+        </div>
+        <div>
+            <span class="footer-title">Company</span>
+            <a class="link link-hover">About us</a>
+            <a class="link link-hover">Contact</a>
+            <a class="link link-hover">Jobs</a>
+            <a class="link link-hover">Press kit</a>
+        </div>
+        <div>
+            <span class="footer-title">Legal</span>
+            <a class="link link-hover">Terms of use</a>
+            <a class="link link-hover">Privacy policy</a>
+            <a class="link link-hover">Cookie policy</a>
+        </div--->
+    </footer>
+</body>
+</html>
