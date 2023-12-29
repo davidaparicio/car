@@ -5,7 +5,8 @@ class Config:
 
     DEBUG = False
     TESTING = False
-    SECRET_KEY = "elbEJ80libKieSGezAFD9Mvsf69XzQkv8oE9vB9K"
+    SECRET_KEY = "elbEJ80libKieSGezAFD9Mvsf69XzQkv8oE9vB9K"  # nosec - ✅ example
+    # https://bandit.readthedocs.io/en/latest/config.html#exclusions
 
 
 class DevelopmentConfig(Config):

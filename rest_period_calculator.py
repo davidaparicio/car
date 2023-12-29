@@ -40,7 +40,8 @@ if __name__ == "__main__":
     office_start = datetime(2023, 1, 3, 9, 0)
 
     respected, message = calculate_rest_period(on_call_ends, office_start)
-    assert not respected
+    assert not respected  # nosec - ✅ not respected example
+    # https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement
     print(on_call_ends, office_start)
     print(message)
 
@@ -49,6 +50,6 @@ if __name__ == "__main__":
     office_start = datetime(2024, 1, 2, 9, 0)
 
     respected, message = calculate_rest_period(on_call_ends, office_start)
-    assert respected
+    assert respected  # nosec - ✅ respected example
     print(on_call_ends, office_start)
     print(message)

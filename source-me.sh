@@ -18,6 +18,7 @@ pip install -r dev-requirements.txt
 if command -v pre-commit >/dev/null 2>&1
 then
   echo -e "pre-commit already present. \t Installation skipped..."
+  # pre-commit install && pre-commit autoupdate && pre-commit run -a
 else
   echo "Installing the latest pre-commit version for Python3 into a venv.." && \
   echo "(venv == a virtual Python3 environment dedicated for this project)." && \
