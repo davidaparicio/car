@@ -8,7 +8,7 @@ app = Flask(__name__)
 # HTML template
 TEMPLATE = """
 <!DOCTYPE html>
-<html data-theme="cupcake">
+<html>
 <head>
     <title>On-Call Rest Period Calculator</title>
     <meta charset="UTF-8">
@@ -24,11 +24,11 @@ TEMPLATE = """
         var newField = document.createElement("input");
         newField.type = "datetime-local";
         newField.name = "on_call_ends[]";
-        newField.style="display: inline-block; width: auto; vertical-align: middle;"
+        //newField.style="display: inline-block; width: auto; vertical-align: middle;"
         newField.className = "input input-bordered input-primary w-full max-w-xs";
 
         var deleteButton = document.createElement("button");
-        deleteButton.type = "button";
+        //deleteButton.type = "button";
         deleteButton.innerHTML = "Delete";
         deleteButton.onclick = function() { deleteField(this); };
         deleteButton.className = "btn btn-secondary";
@@ -46,16 +46,55 @@ TEMPLATE = """
             alert("At least one end time must be specified.");
         }
     }
+
+    // SetTheme
+    function setTheme(themeName) {
+        document.documentElement.setAttribute('data-theme', themeName);
+    }
+
+    function setTheme(themeName) {
+        localStorage.setItem('theme', themeName);
+        updateTheme();
+    }
+
+    function updateTheme() {
+        const theme = localStorage.getItem('theme') || 'cupcake'; // Default to light theme
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+
+    // Set the theme on initial load
+    updateTheme();
     </script>
 </head>
 <body class="p-6">
+    <header class="navbar bg-base-100">
+    <div class="flex-1">
+        <a class="btn btn-ghost normal-case text-xl">C.A.R. - Calculatrice Astreinte/Repos</a>
+    </div>
+    <div class="dropdown dropdown-end">
+        <label tabindex="0" class="btn m-1">Select Theme</label>
+        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+            <li><a onclick="setTheme('cupcake')">Cupcake</a></li>
+            <li><a onclick="setTheme('light')">Light</a></li>
+            <li><a onclick="setTheme('dark')">Dark</a></li>
+            <!-- Add more themes as needed -->
+        </ul>
+    </div>
+    <div class="flex-none">
+        <ul class="menu menu-horizontal p-0">
+        <li><a>Home</a></li>
+        <li><a>About</a></li>
+        <li><a>Contact</a></li>
+        </ul>
+    </div>
+    </header>
     <h2 class="text-2xl font-bold mb-4">Check Rest Period for On-Call Sessions</h2>
     <form method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div id="on_call_end_times">
             {% for end_time in on_call_ends %}
             <div class="flex items-center mb-4">
-                <input type="datetime-local" name="on_call_ends[]" value="{{ end_time }}" style="display: inline-block; width: auto; vertical-align: middle;" class="input input-bordered input-primary w-full max-w-xs" />
-                <button type="button" onclick="deleteField(this)" style="display: inline-block; vertical-align: middle;" class="btn btn-secondary">Delete</button>
+                <input type="datetime-local" name="on_call_ends[]" value="{{ end_time }}" class="input input-bordered input-primary w-full max-w-xs" />
+                <button onclick="deleteField(this)" class="btn btn-secondary">Delete</button>
             </div>
             {% endfor %}
         </div>
@@ -71,6 +110,31 @@ TEMPLATE = """
     {% if message %}
     <h3 class="text-xl">{{ message|safe }}</h3>
     {% endif %}
+    <footer class="footer p-10 bg-base-200 text-base-content">
+    <div class="flex-1">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Version v0.0.1 - Built 29/12/23</label>
+    </div>
+    <!---div>
+        <span class="footer-title">Services</span>
+        <a class="link link-hover">Branding</a>
+        <a class="link link-hover">Design</a>
+        <a class="link link-hover">Marketing</a>
+        <a class="link link-hover">Advertisement</a>
+    </div>
+    <div>
+        <span class="footer-title">Company</span>
+        <a class="link link-hover">About us</a>
+        <a class="link link-hover">Contact</a>
+        <a class="link link-hover">Jobs</a>
+        <a class="link link-hover">Press kit</a>
+    </div>
+    <div>
+        <span class="footer-title">Legal</span>
+        <a class="link link-hover">Terms of use</a>
+        <a class="link link-hover">Privacy policy</a>
+        <a class="link link-hover">Cookie policy</a>
+    </div--->
+    </footer>
 </body>
 </html>
 """
