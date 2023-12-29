@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, render_template_string
 from datetime import datetime, timedelta
 # from rest_period_calculator import calculate_rest_period
@@ -125,4 +126,6 @@ def check_rest_period():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    env = os.getenv("ENV", "DEVELOPMENT").upper()
+    debug_mode = False if env == "PRODUCTION" else True
+    app.run(debug=debug_mode)
