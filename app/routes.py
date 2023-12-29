@@ -1,20 +1,12 @@
-import os
-from flask import Flask, request, render_template
-from config import DevelopmentConfig, TestingConfig, ProductionConfig
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from datetime import datetime
 from rest_period_calculator import calculate_rest_period
 
-app = Flask(__name__)
-
-if os.getenv("FLASK_ENV") == "production":
-    app.config.from_object(ProductionConfig)
-elif os.getenv("FLASK_ENV") == "testing":
-    app.config.from_object(TestingConfig)
-else:
-    app.config.from_object(DevelopmentConfig)
+# Create a Blueprint named 'main'
+main = Blueprint("main", __name__)
 
 
-@app.route("/", methods=["GET", "POST"])
+@main.route("/", methods=["GET", "POST"])
 def check_rest_period():
     message = None
     on_call_ends_str = request.form.getlist("on_call_ends[]")
@@ -54,10 +46,30 @@ def check_rest_period():
     )
 
 
-@app.route("/about/")
+@main.route("/about/")
 def about():
     return render_template("about.html")
 
 
-if __name__ == "__main__":
-    app.run(debug=app.config["DEBUG"])
+@main.route("/contact/", methods=["GET", "POST"])
+def contact():
+    if request.method == "POST":
+        # name = request.form['name']
+        # email = request.form['email']
+        # message = request.form['message']
+
+        """subject = f"New contact from {name}"
+        message = Message(subject, recipients=['your-receiving-email@example.com'])
+        message.body = f"From: {name} <{email}>\n\n{message_body}"
+
+        try:
+            mail.send(message)
+            flash('Your message has been sent successfully!', 'success')
+        except Exception as e:
+            flash('Failed to send message. Please try again later.', 'error')
+            # Log the exception for debugging """
+
+        flash("Thank you for your message! ", "success")
+        return redirect(url_for("main.contact"))
+
+    return render_template("contact.html")

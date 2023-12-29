@@ -5,6 +5,7 @@ class Config:
 
     DEBUG = False
     TESTING = False
+    SECRET_KEY = "elbEJ80libKieSGezAFD9Mvsf69XzQkv8oE9vB9K"
 
 
 class DevelopmentConfig(Config):

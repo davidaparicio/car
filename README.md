@@ -131,9 +131,9 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
-- open [issues] (https://github.com/davidaparicio/car/issues)
-- send [pull requests] (http://help.github.com/send-pull-requests)
-- contact [David Aparicio] (https://github.com/davidaparicio)
+- open [issues](https://github.com/davidaparicio/car/issues)
+- send [pull requests](http://help.github.com/send-pull-requests)
+- contact [David Aparicio](https://github.com/davidaparicio)
 
 ## License
 Licensed under the MIT License, Version 2.0 (the "License"). You may not use this file except in compliance with the License.
