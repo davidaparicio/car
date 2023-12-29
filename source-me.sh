@@ -11,7 +11,9 @@
 alias venv="if [ -e ./.venv/bin/activate ]; then source ./.venv/bin/activate; else python3 -m venv .venv && source ./.venv/bin/activate; fi"
 venv
 pip install --upgrade pip
-pip install Flask
+pip install -r requirements.txt
+pip install -r dev-requirements.txt
+# pip freeze > full_requirements.txt
 
 if command -v pre-commit >/dev/null 2>&1
 then

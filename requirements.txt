@@ -1,0 +1,15 @@
+###### Requirements without Version Specifiers ######
+###### Requirements with Version Specifiers ######
+Flask>=3.0.0 # Minimum version
+
+# ~=: Compatible release clause
+# ==: Version matching clause
+# !=: Version exclusion clause
+# <=, >=: Inclusive ordered comparison clause
+# <, >: Exclusive ordered comparison clause
+# ===: Arbitrary equality clause.
+#
+# The comma (",") is equivalent to a logical and operator:
+# a candidate version must match all given version clauses
+# in order to match the specifier as a whole.
+# https://stackoverflow.com/a/50842265
