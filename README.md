@@ -105,15 +105,47 @@ If you're planning to deploy on cloud platforms like AWS, Google Cloud, or Herok
 
 Remember, moving to production requires careful planning, especially around security and performance. Make sure to test your deployment thoroughly in a staging environment before going live.
 
+## Testing
+
+### Best Practices
+
+* Isolation: Each test should be isolated and independent of others. Tests should not rely on the state left by previous tests.
+* Coverage: Aim for high test coverage, but remember that 100% coverage does not guarantee bug-free code.
+* Mocking: Use mocking (e.g., unittest.mock) to simulate behaviors of complex dependencies or external services.
+* Continuous Integration: Integrate testing into your CI/CD pipeline to ensure tests are run automatically.
+
+### Advanced Testing
+
+For more complex applications, consider using additional tools like pytest for a more feature-rich testing experience, and Flask-Testing for additional Flask-specific testing utilities.
+
+Testing in Flask, as in any framework, is a vast topic, and these guidelines provide a starting point. As your application grows, your testing strategies will likely need to evolve to match its complexity and requirements.
+
+
+## Contribute
+
+Works on my machine - and yours ! Spin up pre-configured, standardized dev environments of this repository, by clicking on the button below.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#/https://github.com/davidaparicio/gokvs)
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+- open [issues] (https://github.com/davidaparicio/car/issues)
+- send [pull requests] (http://help.github.com/send-pull-requests)
+- contact [David Aparicio] (https://github.com/davidaparicio)
+
 ## License
+Licensed under the MIT License, Version 2.0 (the "License"). You may not use this file except in compliance with the License.
+You may obtain a copy of the License [here](https://choosealicense.com/licenses/mit/).
 
-[Specify the license here or state that it's unlicensed.]
+If needed some help,  there are a ["Licenses 101" by FOSSA](https://fossa.com/blog/open-source-licenses-101-mit-license/), a [Snyk explanation](https://snyk.io/learn/what-is-mit-license/)
+of MIT license and a [French conference talk](https://www.youtube.com/watch?v=8WwTe0vLhgc) by [Jean-Michael Legait](https://twitter.com/jmlegait) about licenses.
 
-## Contact
 
-For any questions or contributions, please reach out to [Your Name or Contact Information].
+[//]: # (https://www.makeareadme.com/)
 
 ---
 
 README Template Version: 1.0
-Last Updated: [Date]
+Last Updated: 29/12/23

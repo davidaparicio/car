@@ -1,12 +1,13 @@
 from flask import Flask, request, render_template_string
 from datetime import datetime, timedelta
+# from rest_period_calculator import calculate_rest_period
 
 app = Flask(__name__)
 
 # HTML template
 TEMPLATE = """
 <!DOCTYPE html>
-<html data-theme="light">
+<html data-theme="cupcake">
 <head>
     <title>On-Call Rest Period Calculator</title>
     <meta charset="UTF-8">
@@ -17,15 +18,19 @@ TEMPLATE = """
     function addNewField() {
         var container = document.getElementById("on_call_end_times");
         var newFieldDiv = document.createElement("div");
+        newFieldDiv.className = "flex items-center mb-4";
 
         var newField = document.createElement("input");
         newField.type = "datetime-local";
         newField.name = "on_call_ends[]";
+        newField.style="display: inline-block; width: auto; vertical-align: middle;"
+        newField.className = "input input-bordered input-primary w-full max-w-xs";
 
         var deleteButton = document.createElement("button");
         deleteButton.type = "button";
         deleteButton.innerHTML = "Delete";
         deleteButton.onclick = function() { deleteField(this); };
+        deleteButton.className = "btn btn-secondary";
 
         newFieldDiv.appendChild(newField);
         newFieldDiv.appendChild(deleteButton);
@@ -41,26 +46,29 @@ TEMPLATE = """
         }
     }
     </script>
-
 </head>
-<body>
-    <h2 class="card-title">Check Rest Period for On-Call Sessions</h2>
-    <form method="post">
+<body class="p-6">
+    <h2 class="text-2xl font-bold mb-4">Check Rest Period for On-Call Sessions</h2>
+    <form method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div id="on_call_end_times">
             {% for end_time in on_call_ends %}
-            <div style="margin-bottom: 10px;" class="p-4" data-theme="cupcake">
+            <div class="flex items-center mb-4">
                 <input type="datetime-local" name="on_call_ends[]" value="{{ end_time }}" style="display: inline-block; width: auto; vertical-align: middle;" class="input input-bordered input-primary w-full max-w-xs" />
                 <button type="button" onclick="deleteField(this)" style="display: inline-block; vertical-align: middle;" class="btn btn-secondary">Delete</button>
             </div>
             {% endfor %}
         </div>
         <button type="button" onclick="addNewField()" class="btn btn-primary">Add New Field</button>
-        <p>Office Start Time:</p>
-        <input type="datetime-local" name="office_start" value="{{ office_start }}" class="input input-bordered input-primary w-full max-w-xs" /><br>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="office_start">
+                Office Start Time:
+            </label>
+            <input type="datetime-local" name="office_start" value="{{ office_start }}" class="input input-bordered input-primary w-full max-w-xs" />
+        </div>
         <input type="submit" class="btn btn-primary" value="Check and Calculate" />
     </form>
     {% if message %}
-    {{ message|safe }}
+    <h3 class="text-xl">{{ message|safe }}</h3>
     {% endif %}
 </body>
 </html>
