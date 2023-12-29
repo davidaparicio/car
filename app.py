@@ -55,6 +55,11 @@ def check_rest_period():
     )
 
 
+@app.route("/about/")
+def about():
+    return render_template("about.html")
+
+
 if __name__ == "__main__":
     env = os.getenv("ENV", "DEVELOPMENT").upper()
     debug_mode = False if env == "PRODUCTION" else True
