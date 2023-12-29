@@ -13,8 +13,8 @@ TEMPLATE = """
     <title>On-Call Rest Period Calculator</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.24/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.24/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script>
     function addNewField() {
         var container = document.getElementById("on_call_end_times");
@@ -65,6 +65,15 @@ TEMPLATE = """
     // Set the theme on initial load
     updateTheme();
     </script>
+    <!---style>
+    button,
+    button[type="button"],
+    input[type="button"],
+    input[type="reset"],
+    input[type="submit"] {
+        background-color: black;
+    }
+    </style--->
 </head>
 <body class="p-6">
     <header class="navbar bg-base-100">
@@ -89,27 +98,56 @@ TEMPLATE = """
     </div>
     </header>
     <h2 class="text-2xl font-bold mb-4">Check Rest Period for On-Call Sessions</h2>
-    <form method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div id="on_call_end_times">
-            {% for end_time in on_call_ends %}
-            <div class="flex items-center mb-4">
-                <input type="datetime-local" name="on_call_ends[]" value="{{ end_time }}" class="input input-bordered input-primary w-full max-w-xs" />
-                <button onclick="deleteField(this)" class="btn btn-secondary">Delete</button>
+    <div class="flex">
+        <div class="grow">
+            <form method="post" class="shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <div id="on_call_end_times">
+                    {% for end_time in on_call_ends %}
+                    <div class="flex items-center mb-4">
+                        <input type="datetime-local" name="on_call_ends[]" value="{{ end_time }}" class="input input-bordered input-primary w-full max-w-xs" />
+                        <button onclick="deleteField(this)" class="btn btn-secondary outline-none">Delete</button>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="button" onclick="addNewField()" class="btn btn-primary">Add New Field</button>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="office_start">
+                        Office Start Time:
+                    </label>
+                    <input type="datetime-local" name="office_start" value="{{ office_start }}" class="input input-bordered input-primary w-full max-w-xs" />
+                </div>
+                <input type="submit" class="btn btn-primary" value="Check and Calculate" />
+            </form>
+            <div class="shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                {% if message %}
+                <h3 class="text-xl">{{ message|safe }}</h3>
+                {% endif %}
             </div>
-            {% endfor %}
+            <div class="overflow-x-auto">
+                <table class="table">
+                    <!-- head -->
+                    <thead>
+                    <tr>
+                        <th>Case</th>
+                        <th>Rest time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- row 1 -->
+                    <tr>
+                        <th>Week day</th>
+                        <td>11 consecutive hours</td>
+                    </tr>
+                    <!-- row 2 -->
+                    <tr>
+                        <th>Week-end/Holidays</th>
+                        <td>35 consecutive hours</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <button type="button" onclick="addNewField()" class="btn btn-primary">Add New Field</button>
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="office_start">
-                Office Start Time:
-            </label>
-            <input type="datetime-local" name="office_start" value="{{ office_start }}" class="input input-bordered input-primary w-full max-w-xs" />
-        </div>
-        <input type="submit" class="btn btn-primary" value="Check and Calculate" />
-    </form>
-    {% if message %}
-    <h3 class="text-xl">{{ message|safe }}</h3>
-    {% endif %}
+    </div>
     <footer class="footer p-10 bg-base-200 text-base-content">
     <div class="flex-1">
         <label class="block text-gray-700 text-sm font-bold mb-2">Version v0.0.1 - Built 29/12/23</label>
