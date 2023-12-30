@@ -69,7 +69,7 @@ To contribute to the project:
 
 ## Production deployment
 
-To deploy your Flask application in a production environment, you should use a production-grade WSGI (Web Server Gateway Interface) server. Common choices for WSGI servers include Gunicorn, uWSGI, and Apache with mod_wsgi. Here's a brief overview of how to use Gunicorn, as it's one of the more popular choices:
+To deploy your Flask application in a production environment, you should use a production-grade WSGI (Web Server Gateway Interface) server. Common choices for WSGI servers include Gunicorn, uWSGI, and Apache with mod_wsgi. You can see in the [Flask documentation](https://flask.palletsprojects.com/en/3.0.x/deploying/index.html). Here's a brief overview of how to use Gunicorn, as it's one of the more popular choices:
 
 ### Using Gunicorn
 
