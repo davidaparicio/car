@@ -5,59 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}On-Call Rest Period Calculator{% endblock %}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.24/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script>
-    function addNewField() {
-        var container = document.getElementById("on_call_end_times");
-        var newFieldDiv = document.createElement("div");
-        newFieldDiv.className = "flex items-center mb-4";
-
-        var newField = document.createElement("input");
-        newField.type = "datetime-local";
-        newField.name = "on_call_ends[]";
-        //newField.style="display: inline-block; width: auto; vertical-align: middle;"
-        newField.className = "input input-bordered input-primary w-full max-w-xs";
-
-        var deleteButton = document.createElement("button");
-        //deleteButton.type = "button";
-        deleteButton.innerHTML = "Delete";
-        deleteButton.onclick = function() { deleteField(this); };
-        deleteButton.className = "btn btn-secondary";
-
-        newFieldDiv.appendChild(newField);
-        newFieldDiv.appendChild(deleteButton);
-        container.appendChild(newFieldDiv);
-    }
-
-    function deleteField(btn) {
-        var container = document.getElementById("on_call_end_times");
-        if (container.childElementCount > 1) {
-            btn.parentElement.remove();
-        } else {
-            alert("At least one end time must be specified.");
-        }
-    }
-
-    // SetTheme
-    function setTheme(themeName) {
-        document.documentElement.setAttribute('data-theme', themeName);
-    }
-
-    function setTheme(themeName) {
-        localStorage.setItem('theme', themeName);
-        updateTheme();
-    }
-
-    function updateTheme() {
-        const theme = localStorage.getItem('theme') || 'cupcake'; // Default to light theme
-        document.documentElement.setAttribute('data-theme', theme);
-    }
-
-    // Set the theme on initial load
-    updateTheme();
-    </script>
-    <!---style>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+    <!--script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.24/dist/full.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='/images/favicon.ico') }}">
+    <style>
     button,
     button[type="button"],
     input[type="button"],
@@ -72,15 +29,6 @@
         <div class="flex-1">
             <a class="btn btn-ghost normal-case text-xl">C.A.R. - Calculatrice Astreinte/Repos</a>
         </div>
-        <div class="dropdown dropdown-end">
-            <label tabindex="0" class="btn m-1">Select Theme</label>
-            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                <li><a onclick="setTheme('cupcake')">Cupcake</a></li>
-                <li><a onclick="setTheme('light')">Light</a></li>
-                <li><a onclick="setTheme('dark')">Dark</a></li>
-                <!-- Add more themes as needed -->
-            </ul>
-        </div>
         <div class="flex-none">
             <ul class="menu menu-horizontal p-0">
             <li><a href="{{ url_for('main.check_rest_period') }}">Home</a></li>
@@ -88,7 +36,8 @@
             <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
             </ul>
         </div>
-        </header>
+        {% include 'theme_selector.html' %}
+    </header>
 
     <main>
         {% for category, message in get_flashed_messages(with_categories=true) %}

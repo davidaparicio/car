@@ -59,6 +59,15 @@ class FlaskTestCase(unittest.TestCase):
         response = self.client.get("/about")
         self.assertEqual(response.status_code, 308)  # = Permanent Redirect
 
+    def test_static_files(self):
+        # List of paths to static files you want to test
+        static_files = ["css/style.css", "js/script.js", "images/favicon.ico"]
+
+        for file in static_files:
+            response = self.client.get("/static/" + file)
+            print(type(response))  # Add this line for debugging
+            self.assertEqual(response.status_code, 200, f"Failed to find {file}")
+
     # def tearDown(self):
     #    self.app_context.pop()  # Pop the context after the test
 

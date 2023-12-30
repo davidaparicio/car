@@ -7,6 +7,10 @@ import os
 
 def create_app():
     app = Flask(__name__)
+    """ app = Flask(__name__,
+            static_url_path='',
+            static_folder='app/static',
+            template_folder='app/templates') """
 
     # Load configuration based on the FLASK_ENV environment variable
     if os.getenv("FLASK_ENV") == "production":

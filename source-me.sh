@@ -31,3 +31,19 @@ else
   # https://github.com/antonbabenko/pre-commit-terraform
   # https://www.unixdaemon.net/cloud/preventing-aws-creds-in-git-with-pre-commit/
 fi
+
+if command -v node >/dev/null 2>&1
+then
+  echo -e "node already present. \t Installation skipped..."
+else
+  echo "Installing the LTS Node.JS version.." && \
+  brew install node@20
+  npm install -D tailwindcss
+  npm i -D daisyui@latest
+  npx tailwindcss init
+  # https://tailwindcss.com/docs/optimizing-for-production
+  # npx tailwindcss -o ./dist/main.min.css --minify
+  # npx tailwindcss -i ./src/input.css -o ./dist/output.css #--watch
+  # npx tailwindcss -i tailwind.css -o ./app/static/css/style.css -- watch
+  npx tailwindcss -i tailwind.css -o ./app/static/css/style.css --minify
+fi

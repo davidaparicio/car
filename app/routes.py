@@ -7,6 +7,7 @@ main = Blueprint("main", __name__)
 
 
 @main.route("/", methods=["GET", "POST"])
+@main.route("/index", methods=["GET", "POST"])
 def check_rest_period():
     message = None
     on_call_ends_str = request.form.getlist("on_call_ends[]")
@@ -49,6 +50,11 @@ def check_rest_period():
 @main.route("/about/")
 def about():
     return render_template("about.html")
+
+
+@main.route("/lorem/")
+def lorem():
+    return render_template("lorem.html")
 
 
 @main.route("/contact/", methods=["GET", "POST"])
