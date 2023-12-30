@@ -60,7 +60,7 @@ def lorem():
 @main.route("/contact/", methods=["GET", "POST"])
 def contact():
     if request.method == "POST":
-        # name = request.form['name']
+        name = request.form["name"]
         # email = request.form['email']
         # message = request.form['message']
 
@@ -75,7 +75,7 @@ def contact():
             flash('Failed to send message. Please try again later.', 'error')
             # Log the exception for debugging """
 
-        flash("Thank you for your message! ", "success")
+        flash(f"Thank you, {name}, for your message!", "success")
         return redirect(url_for("main.contact"))
 
     return render_template("contact.html")
