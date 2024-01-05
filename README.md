@@ -121,6 +121,13 @@ For more complex applications, consider using additional tools like pytest for a
 Testing in Flask, as in any framework, is a vast topic, and these guidelines provide a starting point. As your application grows, your testing strategies will likely need to evolve to match its complexity and requirements.
 
 
+## One-Click Deploy
+
+Deploy the CAR application using [Vercel](https://vercel.com):
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdavidaparicio%2Fcar%2Ftree%2Fmain&demo-title=CAR%20%2B%20Flask%203%20%2B%20Vercel&demo-description=CAR%20On-Call%20Rest%20Period%20Calculator&demo-url=https%3A%2F%2Fflask3-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
+
+
 ## Contribute
 
 Works on my machine - and yours ! Spin up pre-configured, standardized dev environments of this repository, by clicking on the button below.
