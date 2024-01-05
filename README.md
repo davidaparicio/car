@@ -1,6 +1,8 @@
 
 # CAR - Calculatrice Astreinte/Repos
 
+<img width="673" height="800" src="car.jpg" alt="CAR screenshot" title="CAR / Screen" />
+
 ## On-Call Rest Period Calculator
 
 This Flask application helps manage on-call schedules by calculating rest periods between on-call sessions and regular office hours. It ensures compliance with rest policies, such as the 11-hour daily rest and the 35-hour weekend rest window.
@@ -125,7 +127,7 @@ Testing in Flask, as in any framework, is a vast topic, and these guidelines pro
 
 Deploy the CAR application using [Vercel](https://vercel.com):
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdavidaparicio%2Fcar%2Ftree%2Fmain&demo-title=CAR%20%2B%20Flask%203%20%2B%20Vercel&demo-description=CAR%20On-Call%20Rest%20Period%20Calculator&demo-url=https%3A%2F%2Fflask3-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdavidaparicio%2Fcar%2Ftree%2Fmain&demo-title=CAR%20%2B%20Flask%203%20%2B%20Vercel&demo-description=CAR%20On-Call%20Rest%20Period%20Calculator&demo-url=https%3A%2F%2Fcar-green-pi.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
 
 
 ## Contribute
